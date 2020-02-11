@@ -7,18 +7,34 @@
         SELECT bootstrapServersConfig as jsonbtServersConfig
             ,autoCommitConfig
             ,groupIdConfig
-            ,buffTopicName as jsonbTopicName
+            ,buffTopicName as jsonTopicName
             ,buffMinBatchSize
             ,buffIsHashListInclude
             ,buffTimeoutMillis
             ,buffPollIntervalMillis
-        FROM bufferStatus
+        FROM ConsumerStatus
+        WHERE consumerType=0
     </select>
 
     <insert id="insertBufferStatus">
-        INSERT INTO bufferStatus (bootstrapServersConfig, autoCommitConfig, groupIdConfig, buffTopicName, buffMinBatchSize, buffIsHashListInclude, buffTimeoutMillis, buffPollIntervalMillis)
-        VALUES (#{jsonbtServersConfig}, #{autoCommitConfig}, #{groupIdConfig}, #{jsonbTopicName}, #{buffMinBatchSize}, #{buffIsHashListInclude}, #{buffTimeoutMillis}, #{buffPollIntervalMillis})
+        INSERT INTO ConsumerStatus (bootstrapServersConfig, autoCommitConfig, groupIdConfig, buffTopicName, buffMinBatchSize, buffIsHashListInclude, buffTimeoutMillis, buffPollIntervalMillis, consumerType)
+        VALUES (#{jsonbtServersConfig}, #{autoCommitConfig}, #{groupIdConfig}, #{jsonTopicName}, #{buffMinBatchSize}, #{buffIsHashListInclude}, #{buffTimeoutMillis}, #{buffPollIntervalMillis}, 0)
     </insert>
 
+    <select id="selectAllImmediateStatus" resultType="com.example.sqlite.model.ImmediateStatus">
+        SELECT bootstrapServersConfig as jsonbtServersConfig
+             ,autoCommitConfig
+             ,groupIdConfig
+             ,immediateTopicName as jsonTopicName
+             ,immediateIsHashListInclude
+             ,immediateTimeoutMillis
+             ,immediatePollIntervalMillis
+        FROM ConsumerStatus
+        WHERE consumerType=1
+    </select>
 
+    <insert id="insertImmediateStatus">
+        INSERT INTO ConsumerStatus (bootstrapServersConfig, autoCommitConfig, groupIdConfig, immediateTopicName, immediateIsHashListInclude, immediateTimeoutMillis, immediatePollIntervalMillis, consumerType)
+        VALUES (#{jsonbtServersConfig}, #{autoCommitConfig}, #{groupIdConfig}, #{jsonTopicName}, #{immediateIsHashListInclude}, #{immediateTimeoutMillis}, #{immediatePollIntervalMillis},1)
+    </insert>
 </mapper>

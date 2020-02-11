@@ -18,7 +18,7 @@ public class BufferStatus {
     Object keyDeserializerClassConfig;
     Object valuesDeserializerClassConfig;
     // buffer consumer configs
-    String jsonbTopicName;
+    String jsonTopicName;
     List<String> buffTopicName;
     int buffMinBatchSize;
     Boolean buffIsHashListInclude;
@@ -28,11 +28,13 @@ public class BufferStatus {
 
     ObjectMapper om = new ObjectMapper();
 
-    public BufferStatus(String jsonbtServersConfig, Boolean autoCommitConfig, String groupIdConfig, String jsonbTopicName, int buffMinBatchSize, Boolean buffIsHashListInclude, int buffTimeoutMillis, long buffPollIntervalMillis) throws JsonProcessingException {
-        this.bootstrapServersConfig = om.readValue(jsonbtServersConfig, new TypeReference<List<String>>() {});
+
+    //db에서 가져올 때
+    public BufferStatus(String jsonbtServersConfig, Boolean autoCommitConfig, String groupIdConfig, String jsonTopicName, int buffMinBatchSize, Boolean buffIsHashListInclude, int buffTimeoutMillis, long buffPollIntervalMillis) throws JsonProcessingException {
+        this.bootstrapServersConfig = om.readValue(jsonbtServersConfig, new TypeReference<List<String>>(){});
         this.autoCommitConfig = autoCommitConfig;
         this.groupIdConfig = groupIdConfig;
-        this.buffTopicName = om.readValue(jsonbTopicName, new TypeReference<List<String>>(){});
+        this.buffTopicName = om.readValue(jsonTopicName, new TypeReference<List<String>>(){});
         this.buffMinBatchSize = buffMinBatchSize;
         this.buffIsHashListInclude = buffIsHashListInclude;
         this.buffTimeoutMillis = buffTimeoutMillis;
@@ -41,12 +43,10 @@ public class BufferStatus {
         this.valuesDeserializerClassConfig = JsonDeserializer.class;
 
     }
-
+    //db로 보낼 때
     public BufferStatus(List<String> bootstrapServersConfig, Boolean autoCommitConfig, String groupIdConfig,
                         List<String> buffTopicName, int buffMinBatchSize,
                         Boolean buffIsHashListInclude, int buffTimeoutMillis, long buffPollIntervalMillis) throws JsonProcessingException {
-
-
         this.jsonbtServersConfig = om.writeValueAsString(bootstrapServersConfig);
 
         this.bootstrapServersConfig = bootstrapServersConfig;
@@ -54,14 +54,12 @@ public class BufferStatus {
         this.groupIdConfig = groupIdConfig;
         this.keyDeserializerClassConfig = StringDeserializer.class;
         this.valuesDeserializerClassConfig = JsonDeserializer.class;
-        this.jsonbTopicName = om.writeValueAsString(buffTopicName); //jsonString
+        this.jsonTopicName = om.writeValueAsString(buffTopicName); //jsonString
         this.buffMinBatchSize = buffMinBatchSize;
         this.buffIsHashListInclude = buffIsHashListInclude;
         this.buffTimeoutMillis = buffTimeoutMillis;
         this.buffPollIntervalMillis = buffPollIntervalMillis;
     }
-
-
 
 
     public List<String> getBootstrapServersConfig() {
