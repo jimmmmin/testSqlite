@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.sqlite.Mapper.StatusMapper">
+
+    <select id="selectAllBufferStatus" resultType="com.example.sqlite.model.BufferStatus">
+        SELECT bootstrapServersConfig as jsonbtServersConfig
+            ,autoCommitConfig
+            ,groupIdConfig
+            ,buffTopicName as jsonbTopicName
+            ,buffMinBatchSize
+            ,buffIsHashListInclude
+            ,buffTimeoutMillis
+            ,buffPollIntervalMillis
+        FROM bufferStatus
+    </select>
+
+    <insert id="insertBufferStatus">
+        INSERT INTO bufferStatus (bootstrapServersConfig, autoCommitConfig, groupIdConfig, buffTopicName, buffMinBatchSize, buffIsHashListInclude, buffTimeoutMillis, buffPollIntervalMillis)
+        VALUES (#{jsonbtServersConfig}, #{autoCommitConfig}, #{groupIdConfig}, #{jsonbTopicName}, #{buffMinBatchSize}, #{buffIsHashListInclude}, #{buffTimeoutMillis}, #{buffPollIntervalMillis})
+    </insert>
+
+
+</mapper>
