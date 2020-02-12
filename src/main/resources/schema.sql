@@ -11,7 +11,8 @@ create table if not exists ConsumerStatus
     immediateTopicName          varchar(10000),
     immediateIsHashListInclude  integer default 0,
     immediateTimeoutMillis      integer,
-    immediatePollIntervalMillis integer
+    immediatePollIntervalMillis integer,
+    consumerType integer
 );
 
 
